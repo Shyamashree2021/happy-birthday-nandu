@@ -1062,6 +1062,11 @@
     color: var(--stamp);
     font-size: 0.82rem;
   }
+  .friend-counter {
+    margin-top: 0.6rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
 
   footer.credit {
     text-align: center;
@@ -1095,7 +1100,7 @@
   <div class="leak" aria-hidden="true"></div>
   <div class="wrap hero-inner">
     <h1><span class="word" style="--i:0">Hello,</span><br><span class="word accent" style="--i:1">Nandu.</span></h1>
-    <p class="hero-sub">There's something for you.</p>
+    <p class="hero-sub" id="hero-sub">There's something for you.</p>
     <div class="envelope-wrap">
       <button class="envelope" id="envelope" type="button" aria-expanded="false">
         <span class="env-flap" aria-hidden="true"></span>
@@ -1146,12 +1151,6 @@
         <span class="count mono" id="roll-range"></span>
       </div>
       <div class="grid" id="grid" role="list" aria-label="Photos of you and Nandu"></div>
-
-      <div class="sub-label videos-label">
-        <h3 class="mono">Videos</h3>
-        <span class="count mono" id="video-count"></span>
-      </div>
-      <div class="video-grid" id="video-grid"></div>
     </div>
   </section>
 
@@ -1167,33 +1166,6 @@
         <p class="bubble">Four years live on this page now, from the blurry ones nobody should still have to the ones where we somehow look like functioning adults. Every single frame is proof of something I don't say often enough: I'm really lucky you're in my life.</p>
         <p class="bubble">Here's to another year of terrible camera angles and excellent memories.</p>
         <p class="bubble accent shimmer">Happy birthday. <span class="signoff">&mdash; someone who's grateful you exist</span></p>
-      </div>
-    </div>
-  </section>
-
-  <section class="mix" id="sec-mix">
-    <div class="wrap">
-      <div class="section-label">
-        <h2>Now Playing</h2>
-        <div class="rule" aria-hidden="true"></div>
-      </div>
-      <p class="chat-meta mono">sent you a playlist</p>
-      <div class="cassette reveal">
-        <div class="reels" aria-hidden="true">
-          <div class="reel"></div>
-          <div class="reel"></div>
-        </div>
-        <div class="playlist-wrap">
-          <p class="track-label mono">THE FRIENDSHIP PLAYLIST &mdash; TAP A SONG TO PLAY IT</p>
-          <ol class="playlist">
-            <li><a class="pl-title" href="https://www.youtube.com/results?search_query=Tera+Yaar+Hoon+Main+Arijit+Singh" target="_blank" rel="noopener">Tera Yaar Hoon Main</a><span class="pl-artist mono">Arijit Singh</span></li>
-            <li><a class="pl-title" href="https://www.youtube.com/results?search_query=Tu+Hi+Yaar+Mera+Arijit+Singh+Neha+Kakkar" target="_blank" rel="noopener">Tu Hi Yaar Mera</a><span class="pl-artist mono">Arijit Singh, Neha Kakkar</span></li>
-            <li><a class="pl-title" href="https://www.youtube.com/results?search_query=Yaara+Teri+Yaari+Darshan+Raval" target="_blank" rel="noopener">Yaara Teri Yaari</a><span class="pl-artist mono">Darshan Raval</span></li>
-            <li><a class="pl-title" href="https://www.youtube.com/results?search_query=Daaru+Desi+Benny+Dayal+Shalmali+Kholgade" target="_blank" rel="noopener">Daaru Desi</a><span class="pl-artist mono">Benny Dayal, Shalmali Kholgade</span></li>
-            <li><a class="pl-title" href="https://www.youtube.com/results?search_query=Atrangi+Yaari+Amitabh+Bachchan+Farhan+Akhtar" target="_blank" rel="noopener">Atrangi Yaari</a><span class="pl-artist mono">Amitabh Bachchan, Farhan Akhtar</span></li>
-          </ol>
-          <div class="eq" aria-hidden="true"><span></span><span></span><span></span></div>
-        </div>
       </div>
     </div>
   </section>
@@ -1251,6 +1223,7 @@
       <div class="bar" aria-hidden="true"><span class="grow" id="exp-bar"></span></div>
       <h2>That's the whole roll.</h2>
       <p class="today mono" id="today-stamp"></p>
+      <p class="counter mono friend-counter" id="friend-counter"></p>
     </div>
   </section>
 </main>
@@ -1299,19 +1272,17 @@
   });
   grid.appendChild(frag);
 
-  var VIDEOS = ['videos/v0.mp4', 'videos/v1.mp4', 'videos/v2.mp4', 'videos/v3.mp4', 'videos/v5.mp4'];
-  var videoGrid = document.getElementById('video-grid');
-  VIDEOS.forEach(function (src, i) {
-    var vid = document.createElement('video');
-    vid.src = src;
-    vid.controls = true;
-    vid.preload = 'metadata';
-    vid.playsInline = true;
-    vid.setAttribute('aria-label', 'A video memory with Nandu, ' + (i + 1) + ' of ' + VIDEOS.length);
-    videoGrid.appendChild(vid);
-  });
-  var videoCountEl = document.getElementById('video-count');
-  if (videoCountEl) videoCountEl.textContent = VIDEOS.length + ' clips';
+  var heroSub = document.getElementById('hero-sub');
+  if (heroSub) {
+    var hr = new Date().getHours();
+    var greeting;
+    if (hr < 5) greeting = "Up this late? Iconic of you. There's something for you.";
+    else if (hr < 12) greeting = "Good morning, drama queen. There's something for you.";
+    else if (hr < 17) greeting = "Hope your afternoon is as extra as you are. There's something for you.";
+    else if (hr < 21) greeting = "Good evening, superstar. There's something for you.";
+    else greeting = "Night owl hours, as expected. There's something for you.";
+    heroSub.textContent = greeting;
+  }
 
   var envelope = document.getElementById('envelope');
   envelope.addEventListener('click', function () {
@@ -1351,7 +1322,6 @@
     { id: 'sec-feature', label: 'Just You' },
     { id: 'sec-memories', label: 'Memories' },
     { id: 'sec-letter', label: 'Letter' },
-    { id: 'sec-mix', label: 'Song' },
     { id: 'sec-wish', label: 'Wishes' },
     { id: 'sec-closer', label: 'The End' }
   ];
@@ -1454,6 +1424,25 @@
                 if (p < 1) requestAnimationFrame(tick);
               }
               requestAnimationFrame(tick);
+            }
+            var friendEl = document.getElementById('friend-counter');
+            if (friendEl) {
+              var friendStart = new Date(2022, 3, 3);
+              var totalDays = Math.floor((new Date() - friendStart) / 86400000);
+              var fYears = Math.floor(totalDays / 365);
+              var fDays = totalDays % 365;
+              var fStart = null;
+              var fDur = 1100;
+              function fTick(ts) {
+                if (!fStart) fStart = ts;
+                var p = Math.min(1, (ts - fStart) / fDur);
+                var shown = Math.round(p * totalDays);
+                var sy = Math.floor(shown / 365);
+                var sd = shown % 365;
+                friendEl.textContent = sy + ' YEARS, ' + sd + ' DAYS OF FRIENDSHIP — AND COUNTING';
+                if (p < 1) requestAnimationFrame(fTick);
+              }
+              requestAnimationFrame(fTick);
             }
           }
           revealObserver.unobserve(el);
