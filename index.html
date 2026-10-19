@@ -504,13 +504,16 @@
     0%, 100% { transform: rotate(-8deg); }
     50% { transform: rotate(6deg); }
   }
-  .sticker.alt { background: var(--accent); left: clamp(0.5rem, 4vw, 2rem); right: auto; }
-  .sticker.small { width: 68px; height: 68px; font-size: 0.6rem; }
+  .sticker.alt { background: var(--accent); left: clamp(0.9rem, 5vw, 2rem); right: auto; }
+  .sticker.small { width: 84px; height: 84px; font-size: 0.56rem; line-height: 1.25; padding: 0 0.3rem; }
+  .sticker.small.tight { font-size: 0.48rem; }
   @media (prefers-reduced-motion: no-preference) {
     .sticker.alt { animation: wiggle 3.6s ease-in-out infinite 0.4s; }
   }
   @media (max-width: 560px) {
     .sticker { width: 62px; height: 62px; font-size: 0.56rem; }
+    .sticker.small { width: 78px; height: 78px; font-size: 0.52rem; }
+    .sticker.small.tight { font-size: 0.44rem; }
   }
   @media (max-width: 640px) {
     .feature .section-label,
@@ -701,7 +704,9 @@
     gap: 0.6rem;
   }
   .chat-meta {
-    text-align: center;
+    max-width: 58ch;
+    margin-inline: auto;
+    text-align: left;
     font-size: 0.7rem;
     letter-spacing: 0.06em;
     color: var(--ink-soft);
@@ -1250,7 +1255,7 @@
 
   <div class="torn alt" aria-hidden="true"></div>
   <section class="letter" id="sec-letter">
-    <span class="sticker small" aria-hidden="true">no cap,<br>fr fr</span>
+    <span class="sticker small" aria-hidden="true">iconic<br>always</span>
     <div class="wrap">
       <p class="chat-meta mono">a message, incoming</p>
       <div class="chat-thread reveal" id="letter-card">
@@ -1266,7 +1271,7 @@
 
   <div class="torn" aria-hidden="true"></div>
   <section class="wish" id="sec-wish">
-    <span class="sticker alt small" aria-hidden="true">professional<br>drama queen</span>
+    <span class="sticker alt small tight" aria-hidden="true">professional<br>drama<br>queen</span>
     <div class="wrap reveal">
       <div class="section-label">
         <h2>Open A Wish</h2>
