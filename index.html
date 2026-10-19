@@ -980,14 +980,15 @@
     width: 150px;
     height: 110px;
     margin: -55px 0 0 -75px;
-    transform: translateZ(-20px) scale(0.3);
+    transform: scale(0.3);
     opacity: 0;
     pointer-events: none;
+    z-index: 6;
   }
   @media (prefers-reduced-motion: no-preference) {
     .wish-card { transition: transform 0.6s cubic-bezier(0.3, 0.8, 0.3, 1) 0.4s, opacity 0.5s ease 0.4s; }
   }
-  #gift.open .wish-card { transform: translateZ(70px) scale(1); opacity: 1; }
+  #gift.open ~ .wish-card { transform: scale(1); opacity: 1; }
   .wish-inner {
     width: 100%; height: 100%;
     background: var(--surface);
@@ -1288,10 +1289,10 @@
               <span class="bow" aria-hidden="true"></span>
             </div>
           </div>
-          <div class="wish-card">
-            <div class="wish-inner" id="wish-inner">
-              <p class="wish-text" id="wish-text">tap the box</p>
-            </div>
+        </div>
+        <div class="wish-card">
+          <div class="wish-inner" id="wish-inner">
+            <p class="wish-text" id="wish-text">tap the box</p>
           </div>
         </div>
       </div>
