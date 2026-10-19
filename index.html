@@ -83,7 +83,11 @@
     padding-block: clamp(3rem, 10vh, 5.5rem) clamp(2.5rem, 7vh, 4rem);
     overflow: hidden;
   }
+  .hero { perspective: 800px; }
   .hero-inner { position: relative; z-index: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-inner { transition: transform 0.2s ease-out; }
+  }
   .leak {
     position: absolute;
     width: min(60vw, 520px);
@@ -525,19 +529,6 @@
     font-weight: 700;
   }
   .sub-label .count { color: var(--ink-soft); font-size: 0.72rem; }
-  .videos-label { margin-top: 2.6rem; }
-  .video-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 0.9rem;
-  }
-  .video-grid video {
-    width: 100%;
-    display: block;
-    border-radius: 6px;
-    background: #000;
-    box-shadow: 0 14px 28px -16px var(--shadow);
-  }
 
   /* ---------- lightbox ---------- */
   #lightbox {
@@ -1316,6 +1307,41 @@
   });
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduceMotion) {
+    var autoScrollPaused = false;
+    ['mouseenter', 'touchstart', 'focusin'].forEach(function (evt) {
+      portraitStrip.addEventListener(evt, function () { autoScrollPaused = true; }, { passive: true });
+    });
+    ['mouseleave', 'touchend', 'focusout'].forEach(function (evt) {
+      portraitStrip.addEventListener(evt, function () { autoScrollPaused = false; }, { passive: true });
+    });
+    function autoScrollStrip() {
+      if (!autoScrollPaused) {
+        var max = portraitStrip.scrollWidth - portraitStrip.clientWidth;
+        if (max > 0) {
+          portraitStrip.scrollLeft += 0.5;
+          if (portraitStrip.scrollLeft >= max - 1) portraitStrip.scrollLeft = 0;
+        }
+      }
+      requestAnimationFrame(autoScrollStrip);
+    }
+    requestAnimationFrame(autoScrollStrip);
+  }
+
+  var heroInner = document.querySelector('.hero-inner');
+  var heroEl = document.querySelector('.hero');
+  if (heroInner && heroEl && window.matchMedia && window.matchMedia('(pointer: fine)').matches && !reduceMotion) {
+    heroEl.addEventListener('mousemove', function (e) {
+      var r = heroEl.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      heroInner.style.transform = 'rotateX(' + (y * -5) + 'deg) rotateY(' + (x * 5) + 'deg)';
+    });
+    heroEl.addEventListener('mouseleave', function () {
+      heroInner.style.transform = '';
+    });
+  }
 
   var sections = [
     { id: 'sec-hero', label: 'Hello' },
